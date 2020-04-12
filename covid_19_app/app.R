@@ -86,10 +86,10 @@ ui <- fluidPage(theme = shinytheme('flatly'),
                                We can also use these charts to estimate how quickly cases/deaths will jump an order of magnitude,
                                e.g. from 100 cases to 1000 cases as the scale is not linear.'),
                              br(),
-                             p('For the growth rate charts give us an idea of how quickly the virus is spreading and is
-                               calculated by Number of confirmed cases today divided by the number of confirmed cases
-                               yesterday. 1 is the baseline so if we find that growth rate is below 1 then the rate of spread
-                               is actually slowing.'),
+                             p('The growth rate charts give us an idea of how quickly the virus is spreading and is
+                               calculated by the "Number of confirmed cases today" divided by the "Number of confirmed cases
+                               yesterday". 1 is the baseline value meaning no growth. If we find that the growth rate is below 
+                               1 then the rate at which the virus spreading is slowing.'),
                              p('If you see any bugs or have any suggestions or questions please contact me via my twitter:'),
                              strong('@JoshwaBail'),
                              br(),
@@ -99,16 +99,16 @@ ui <- fluidPage(theme = shinytheme('flatly'),
                              ),
                 
                          mainPanel(
-                             h4('Cumulative UK Cases/Deaths'),
+                             h4('Cumulative UK Cases/Deaths - Since 09/03/2020'),
                              plotlyOutput('uk'),
                              #plotOutput('ukdeaths'),
                              #plotOutput('ukdailycases'),
                              #plotOutput('ukdailydeaths'),
-                             h4('Cumulative UK Cases/Deaths with Logarithmic Scale'),
+                             h4('Cumulative UK Cases/Deaths with Logarithmic Scale- Since 09/03/2020'),
                              plotlyOutput('uklog'),
-                             h4('Daily Number of Cases/Deaths'),
+                             h4('Daily Number of Cases/Deaths - Since 09/03/2020'),
                              plotlyOutput('hist'),
-                             h4('Growth Rate of Cases/Deaths'),
+                             h4('Growth Rate of Cases/Deaths - Since 16/03/2020'),
                              plotlyOutput('growth')
                              #plotOutput('ukdeathslog'),
                              
@@ -301,6 +301,7 @@ server <- function(input, output) {
         if(input$tab1cd == 'Cases'){
             p <- ggplot(grow) +
                 geom_line(aes(x = Date, y = growth), color = '#009E73') +
+                geom_point(aes(x = Date, y = growth), color='#009E73') +
                 geom_line(aes(x = Date, y = base), color = '#D55E00', linetype = 'twodash') +
                 theme(axis.title = element_text(), axis.text.x = element_text(), axis.text.y = element_text())+
                 scale_x_date(labels = date_format('%d-%m'))+
@@ -308,12 +309,13 @@ server <- function(input, output) {
             ggplotly(p)
         } else{
             p <- ggplot(growth_d) +
-            geom_line(aes(x = Date, y = growth), color = '#009E73') +
-            geom_line(aes(x = Date, y = base), color = '#D55E00', linetype = 'twodash') +
-            theme(axis.title = element_text(), axis.text.x = element_text(), axis.text.y = element_text())+
-            scale_x_date(labels = date_format('%d-%m'))+
-            ylab('Growth Rate - Deaths')
-        ggplotly(p)
+                geom_line(aes(x = Date, y = growth), color = '#009E73') +
+                geom_point(aes(x = Date, y = growth), color='#009E73') +
+                geom_line(aes(x = Date, y = base), color = '#D55E00', linetype = 'twodash') +
+                theme(axis.title = element_text(), axis.text.x = element_text(), axis.text.y = element_text())+
+                scale_x_date(labels = date_format('%d-%m'))+
+                ylab('Growth Rate - Deaths')
+            ggplotly(p)
             
         }
     })
