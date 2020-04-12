@@ -1,3 +1,5 @@
+# Script to test small structural changes so I do not affect the app in it's current state
+
 data <- read.csv("covid_19_countries_cases.csv", header = TRUE)
 uk <- ts(data[,6], start = decimal_date(as.Date("2020-03-09", format = "%Y-%m-%d")), frequency = 365)
 uengland <- ts(data[,2], start = 1, frequency = 1)
