@@ -20,6 +20,8 @@ library(DT)
 library(scales)
 library(dplyr)
 
+# App to track covid-19 cases and deaths in the uk
+
 data <- read.csv("covid_19_countries_cases.csv", header = TRUE)
 daily <- read.csv("covid_19_daily.csv", header = TRUE)
 uk_deaths <- read.csv("covid_19_deaths.csv", header = TRUE)
